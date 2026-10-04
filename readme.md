@@ -32,3 +32,5 @@ The row equations are:
 - 100 <= x1 <= 150
 
 All x values are nonnegative, x4 <= 20, and x5 <= 10. The objective is to maximize u1.
+
+# ADI Alternating Direction Implicit

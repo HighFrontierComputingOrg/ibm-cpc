@@ -1,3 +1,5 @@
+# Simplex
+
 ## SMPL1: Original Simplex
 
 The Chapter 3 example, worked exactly as it appears in the book. The entire tableau is updated in each iteration. In this example, columns 1 and 4 are unit vectors that do not play a direct role, but they are updated anyway. The revised simplex leaves them untouched.
