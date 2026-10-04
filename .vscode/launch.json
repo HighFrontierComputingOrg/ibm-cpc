@@ -1,0 +1,14 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Octave: Debug Current File",
+      "type": "OctaveDebugger",
+      "request": "launch",
+      "program": "${file}",
+      "octave": "/usr/local/bin/octave-cli",
+      "sourceFolder": "${workspaceFolder}",
+      "workingDirectory": "${workspaceFolder}"
+    }
+  ]
+}
