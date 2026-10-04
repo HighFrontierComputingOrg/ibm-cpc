@@ -1,72 +1,59 @@
-# project simplex
+# Project Simplex
 
-go backwards in time, starting from the mid sixties, and get hands on with a very small business problem using linear programming on an ibm 7094 computer. the [widget problem](https://github.com/statespacedev/starid/discussions/4) of alp chapter three seems ideal since it's explicitly solved in tableau form, only takes four iterations, and every operation is easily checked against code. the target is 7094 f66 using btran, ftran, and simh emulated mag tape to maintain the basis inverse as pfi product form of inverse eta columns. for more modern code, python linear algebra is simply annoying, while matlab's 'fortran-osity' provokes spontaneous bouts of smiling. 
+William Orchard-Hays, Advanced Linear-Programming Computing Techniques (New York: McGraw-Hill, 1968).
 
-at first, the incoming column and pivot row numbers for each iteration are simply taken 'as is' from alp chapter three for each iteration. this makes the skeletal mechanism of the revised simplex, ftran, and btran more apparent.
+Go backward in time, starting in the mid-1960s, and work through a small business problem using linear programming. The widget problem in Chapter 3 of ALP seems ideal. It is solved explicitly in tableau form, takes only four iterations, and every operation is easy to check against the code.
 
-## smpl1, original simplex
+The target is BTRAN, FTRAN, and emulated magnetic tape to maintain the basis inverse as PFI (product form of the inverse) eta columns. At first, the incoming column and pivot row for each iteration are taken as given from Chapter 3 of ALP. This makes the basic mechanics of the revised simplex, FTRAN, and BTRAN easier to see.
 
-alp chapter three example, worked exactly as it appears in the book. the entire tableau is updated in each iteration. in this particular case, columns one and four of the tableau are unit vectors that don't play a direct role, but are touched regardless. in the revised simplex, they're left untouched.
+## SMPL1: Original Simplex
 
-## smpl2, revised simplex 
+The Chapter 3 example, worked exactly as it appears in the book. The entire tableau is updated in each iteration. In this example, columns 1 and 4 are unit vectors that do not play a direct role, but they are updated anyway. The revised simplex leaves them untouched.
 
-alp chapter four. the full tableau is not updated, the original serves as a kind of constant. instead, the beta column 'right hand side' is updated using the basis inverse. new eta vectors are generated and ready for 'storage on tape'. each eta is a column of the basis inverse. the basis inverse is also used to transform incoming columns, which has the same end effect as the 'tape based' ftran routine.
+## SMPL2: Revised Simplex
 
-## smpl3, tape based ftran for transforming columns
+Chapter 4 of ALP. The full tableau is not updated; the original tableau serves as a constant. Instead, the beta column (the right-hand side) is updated using the basis inverse. New eta vectors are generated for storage on tape. Each eta vector is a column of the basis inverse. The basis inverse is also used to transform incoming columns, with the same effect as the tape-based FTRAN routine.
 
-tape is emulated by storing pivot value and eta column pairs left to right in a matrix. this revised simplex mechanism is approaching what was used in the late fifties and early sixties. only the 'right hand side' beta vector is maintained across iterations. the basis inverse is stored as eta vectors 'on tape'. the tape and eta columns are read forwards.
+## SMPL3: Tape-Based FTRAN for Transforming Columns
 
-## smpl4, tape based btran for transforming columns into prices
+Tape is emulated by storing pivot-value and eta-column pairs, from left to right, in a matrix. This revised-simplex mechanism approaches the methods used in the late 1950s and early 1960s. Only the right-hand-side beta vector is maintained across iterations; the basis inverse is stored as eta vectors "on tape." The tape and eta columns are read forward.
 
-early in each revised simplex iteration, the updated first row values at particular columns are needed. these are the 'prices' of those particular columns. profit is increased by bringing a column with a negative price into the basis. for a particular column, the updated price is the dot product with the first row of the basis inverse. btran is a mechanism to pderform these dot products. the first row of the basis inverse comes from the eta columns on tape. the tape and eta columns are read backwards, conveniently reversing back through the previous iteration's ftran.
+## SMPL4: Tape-Based BTRAN for Transforming Columns into Prices
 
-## smpl5, pricing and choice of incoming vector
+Early in each revised-simplex iteration, the updated first-row values for particular columns are needed. These values are the columns' prices. Profit increases when a column with a negative price enters the basis. The updated price of a column is the dot product of that column with the first row of the basis inverse. BTRAN computes these dot products. The first row of the basis inverse is derived from the eta columns on tape, which are read backward—reversing the order used by FTRAN in the previous iteration.
 
-up until now, the choice of incoming vector was a given, and so it wasn't necessary to perform pricing. now that btran is available, do perform pricing and use that to choose an incoming vector.
+## SMPL5: Pricing and Choosing the Incoming Vector
 
-## smpl6, ratio test and choice of outgoing vector
+Until now, the incoming vector was given, so pricing was unnecessary. With BTRAN available, pricing can now be performed to choose the incoming vector.
 
-so far the outgoing vector was a given. it's now time to use the incoming column and the beta column to decide on a pivot value and therefore the outgoing column. first transform the incoming column from the original tableau using ftran. then for each relevant row, check the beta value divided by incoming value. this would be the new beta value. if it's not feasible, reject it. of those not rejected, choose the smallest. that row is the pivot row and outgoing column.
+## SMPL6: Ratio Test and Choosing the Outgoing Vector
 
-# widget problem of alp chapter three
+Until now, the outgoing vector was given. The incoming column and beta column can now be used to determine the pivot value and, therefore, the outgoing column. First, transform the incoming column from the original tableau using FTRAN. Then, for each relevant row, divide the beta value by the incoming value to find the candidate new beta value. Reject infeasible candidates and choose the smallest remaining ratio. Its row is the pivot row, and its basic variable leaves the basis.
 
-five activities x1 to x5 and five columns of the tableau
+# The Widget Problem in Chapter 3 of ALP
 
-- activity x1 is production of unfinished widgets
-- activity x2 is conversion of unfinished to finished widgets
-- activity x3 is production of finished widgets from scratch
-- activity x4 is the use of l1 overtime
-- activity x5 is the use of l2 overtime
+The problem has five activities, x1 through x5, represented by five tableau columns:
 
-the five rows of the model and its tableau
+- Activity x1 produces unfinished widgets.
+- Activity x2 converts unfinished widgets into finished widgets.
+- Activity x3 produces finished widgets from scratch.
+- Activity x4 uses L1 overtime.
+- Activity x5 uses L2 overtime.
 
-- row 1 is the functional, costs are positive and revenues are negative. functional means objective recast as an equation including the values to be maximized
-- row 2 is capacity constraint on l1 labor
-- row 3 is capactiy constraint on l2 labor
-- row 4 is used to insure that enough unfinished widgets are produced to allow some of them to be converted to finished ones
-- row 5 is contractual and policy constraints on unfinshed widgets
+The model and tableau have five rows:
 
-row equations
+- Row 1 is the objective function, recast as an equation. Costs are positive, and revenues are negative.
+- Row 2 is the capacity constraint on L1 labor.
+- Row 3 is the capacity constraint on L2 labor.
+- Row 4 ensures that enough unfinished widgets are produced to allow some to be converted into finished widgets.
+- Row 5 represents contractual and policy constraints on unfinished widgets.
 
-- u1 - 5.4x1 - 7.3x2 -12.96x3 + 6x4 + 9x5 + 800 = 0
-- .5x1 + .6x3 - x4 <= 80
-- .25x1 + .5x2 + .6x3 - x5 <= 40
+The row equations are:
+
+- u1 - 5.4x1 - 7.3x2 - 12.96x3 + 6x4 + 9x5 + 800 = 0
+- 0.5x1 + 0.6x3 - x4 <= 80
+- 0.25x1 + 0.5x2 + 0.6x3 - x5 <= 40
 - -x1 + x2 <= 0
 - 100 <= x1 <= 150
 
-where all x >= 0, x4 <= 20, x5 <= 10, u1 is to be maximized
-
-# code cold storage area
-
-function feas = isfeas(itr, bh, vtyps)
-  feas = true;
-  for i = 1:5
-    b = itr(i,11);
-    vt = vtyps(bh(i));
-    if vt == 1
-      if b < 0 || b > 1, feas = false; end
-    elseif vt == 2
-      if b < 0, feas = false; end
-    end
-  end
-end
+All x values are nonnegative, x4 <= 20, and x5 <= 10. The objective is to maximize u1.
