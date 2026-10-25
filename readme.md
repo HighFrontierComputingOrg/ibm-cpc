@@ -47,6 +47,13 @@ pages are stored in `simplex/alp/`.
 The [ADI folder](adi/) is reserved for alternating-direction implicit
 examples; it currently contains only a short placeholder.
 
+### CPC emulator POC
+
+A draft design for a minimal Python emulator, based primarily on the 1954
+operating manual and informed by the 1951 overview, is in the
+[CPC emulator POC design](docs/cpc-emulator-poc.md). The emulator itself has
+not been implemented yet.
+
 ## Repository conventions
 
 Python cache directories (`__pycache__/`) are ignored by Git.
