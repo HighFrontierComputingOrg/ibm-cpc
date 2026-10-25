@@ -1,4 +1,6 @@
 
+global tablu bahead tapem tapeof status vtyps;
+
 # tableau
 tablu = [
     1   0   0   0   0   -5.4    -7.3    -12.96  120     90      -800
@@ -11,7 +13,6 @@ status = [1 1 1 1 1 0 0 0 0 0]; # 1 for in basis, 2 for at bound
 bahead = [1 2 3 4 5]; # basis heading
 tapem = zeros(6,10); # tape matrix for columns left to right
 tapeof = 0; # last column on tape
-global tablu bahead tapem tapeof status vtyps;
 
 # tape based backward transform of pricing vector pi
 function pie = btran(fvec)

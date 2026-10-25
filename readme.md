@@ -2,6 +2,16 @@
 
 https://www.columbia.edu/cu/computinghistory/cpc.html 
 
+## Running the examples
+
+Run the Python example from the repository root with:
+
+```sh
+python3 sor/sor.py
+```
+
+Run any simplex example with Octave, for example `octave simplex/smpl1.m`. See
+[simplex/readme.md](simplex/readme.md) for the full list of simplex examples.
 
 # Simplex
 

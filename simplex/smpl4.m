@@ -1,4 +1,6 @@
 
+global tab bh tap tapeof;
+
 # tableau
 tab = [
     1   0   0   0   0   -5.4    -7.3    -12.96  120     90      -800
@@ -11,7 +13,6 @@ atbou = [0 0 0 0 0 0 0 0 0 0]; # variables at bound
 bh = [1 2 3 4 5]; # basis heading
 tap = zeros(6,10); # tape storage for columns left to right
 tapeof = 0; # last column on tape
-global tab bh tap tapeof;
 
 # tape based forward transform
 function alpha = ftran(alpha)
