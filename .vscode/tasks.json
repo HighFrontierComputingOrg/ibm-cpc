@@ -2,6 +2,16 @@
   "version": "2.0.0",
   "tasks": [
     {
+      "label": "Fortran: Run current file",
+      "type": "shell",
+      "command": "mkdir -p \"${workspaceFolder}/.build\" && gfortran -std=legacy \"${file}\" -o \"${workspaceFolder}/.build/${fileBasenameNoExtension}\" && \"${workspaceFolder}/.build/${fileBasenameNoExtension}\"",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [],
+      "group": "build"
+    },
+    {
       "label": "Octave: Run current file",
       "type": "shell",
       "command": "octave",

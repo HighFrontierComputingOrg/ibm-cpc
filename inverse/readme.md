@@ -1,8 +1,8 @@
 # Matrix inversion and iterative improvement
 
-This example reproduces, in Python and legacy Fortran, the core operations
-behind direct solution of linear systems: LU decomposition, triangular solves,
-matrix inversion by repeated solves, and iterative improvement.
+This Python example demonstrates the core operations behind direct solution
+of linear systems: LU decomposition, triangular solves, matrix inversion by
+repeated solves, and iterative improvement.
 
 The numerical example follows the themes of *Computer Solutions of Linear
 Algebraic Systems* by George E. Forsythe and Cleve B. Moler (1967). It uses a
@@ -96,29 +96,6 @@ Current File** in the Run and Debug view, and start debugging. The project
 environment must be selected as the Python interpreter; setup and launch
 configuration are described in the [top-level README](../readme.md).
 
-## Run the Fortran version
-
-With `gfortran` installed, compile from the repository root and run the
-resulting executable:
-
-```sh
-gfortran -std=legacy -o /tmp/inverse-fortran inverse/inverse.for
-/tmp/inverse-fortran
-```
-
-The source writes to Fortran unit 6, which is the usual `gfortran` terminal
-output unit. With the current compiler, compilation emits a warning that the
-named `/env/` `COMMON` block has different sizes in `main` and `sing`; the
-executable nevertheless runs and prints the matrices.
-
-The Fortran implementation uses the compiler's default `REAL` precision.
-Its results need not match Python's exactly: the Python code explicitly uses
-NumPy `float32` arrays, while expression evaluation and compiler/runtime
-choices can also affect rounding. The original PDP-10 transcript and its
-36-bit results are therefore historical reference output, not a bit-for-bit
-test for either modern implementation.
-
 ## Files
 
 - [`inverse.py`](inverse.py) — NumPy implementation.
-- [`inverse.for`](inverse.for) — fixed-form legacy Fortran implementation.
