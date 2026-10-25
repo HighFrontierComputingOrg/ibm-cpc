@@ -8,6 +8,10 @@ octave simplex/smpl1.m
 
 Replace `smpl1.m` with any of `smpl2.m` through `smpl6.m` to run the other examples.
 
+For detailed notes on the source material, worked model, pivot rules,
+product-form inverse, FTRAN, BTRAN, and sparse reinversion, see
+[alp/readme.md](alp/readme.md). The photographed source pages are indexed there.
+
 ## SMPL1: Original Simplex
 
 The Chapter 3 example, worked exactly as it appears in the book. The entire tableau is updated in each iteration. In this example, columns 1 and 4 are unit vectors that do not play a direct role, but they are updated anyway. The revised simplex leaves them untouched.
