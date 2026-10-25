@@ -10,10 +10,10 @@ numbered storage, and cards provide input and output.
 This is a behavioral teaching model, not a cycle-accurate hardware
 simulation. The design is grounded in two local sources:
 
-- [*The IBM Card-Programmed Electronic Calculator* (1951)](<Sheldon%20and%20Tatum%20-%201951%20-%20The%20IBM%20Card-Programmed%20Electronic%20Calculator.pdf>),
+- [*The IBM Card-Programmed Electronic Calculator* (1951)](cpc-overview.pdf),
   a short overview of the machine.
 - [*Card-Programmed Electronic Calculator: Model A1 Using Machine Types
-  412–418, 605, 527, and 941: Principles of Operation* (October 1954)](22-8686-3_CPCprincOps_Oct54.pdf),
+  412–418, 605, 527, and 941: Principles of Operation* (October 1954)](cpc-principles.pdf),
   a detailed operational manual.
 
 The 1954 manual should be the primary reference for machine behavior; the

@@ -4,6 +4,21 @@ This repository collects small numerical-method examples connected to the
 IBM CPC computing history project:
 <https://www.columbia.edu/cu/computinghistory/cpc.html>.
 
+## Python setup
+
+Python dependencies are declared in [`pyproject.toml`](pyproject.toml).
+Create the project environment and install the project and its dependencies
+once:
+
+```sh
+python3 -m venv .venv
+.venv/bin/python -m pip install -e ".[debug]"
+```
+
+Run the Python examples with `.venv/bin/python` so they use the project
+environment and its NumPy installation. The `debug` extra installs debugpy
+for the Python debugger configuration in `.vscode/launch.json`.
+
 ## Projects
 
 ### SOR
@@ -21,7 +36,7 @@ iteration. The page scans are kept beside the notes.
 Run it from the repository root:
 
 ```sh
-python3 sor/sor.py
+.venv/bin/python sor/sor.py
 ```
 
 ### Simplex
@@ -51,8 +66,11 @@ examples; it currently contains only a short placeholder.
 
 A draft design for a minimal Python emulator, based primarily on the 1954
 operating manual and informed by the 1951 overview, is in the
-[CPC emulator POC design](docs/cpc-emulator-poc.md). The emulator itself has
+[CPC emulator POC design](cpc/cpc-emulator-poc.md). The emulator itself has
 not been implemented yet.
+
+Source documents: [1951 overview](cpc/cpc-overview.pdf) and
+[1954 principles of operation](cpc/cpc-principles.pdf).
 
 ## Repository conventions
 

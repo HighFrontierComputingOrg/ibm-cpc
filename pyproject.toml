@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ibm-cpc-numerical-examples"
+version = "0.1.0"
+description = "Numerical examples and historical computing projects"
+requires-python = ">=3.10"
+dependencies = [
+    "numpy>=2.0",
+]
+
+[project.optional-dependencies]
+debug = [
+    "debugpy>=1.8",
+]
+
+[tool.setuptools]
+packages = []
+py-modules = []
