@@ -28,15 +28,19 @@ squaring and matrix inversion with iterative improvement.
 
 ### SOR
 
+See the [SOR guide](sor/readme.md) for an overview of the grid example,
+how to run it, and the related source notes.
+
 [`sor/sor.py`](sor/sor.py) currently applies one in-place sweep to a small
 two-by-three grid, using a relaxation factor of 1. It keeps the boundary
 values fixed, retains full floating-point precision internally, and formats
 the displayed grid to three decimal places.
 
-The accompanying [page 123 notes](sor/page123.md),
-[page 124 notes](sor/page124.md), and [page 125 notes](sor/page125.md)
-summarize the grid model, initial values, boundary conditions, and first
-iteration. The page scans are kept beside the notes.
+The accompanying [page 123 notes](sor/1967-cslas/page123.md),
+[page 124 notes](sor/1967-cslas/page124.md), and
+[page 125 notes](sor/1967-cslas/page125.md) summarize the grid model, initial
+values, boundary conditions, and first iteration. The page scans are kept
+beside the notes.
 
 Run it from the repository root:
 
@@ -69,13 +73,8 @@ examples; it currently contains only a short placeholder.
 
 ### CPC emulator POC
 
-A draft design for a minimal Python emulator, based primarily on the 1954
-operating manual and informed by the 1951 overview, is in the
-[CPC emulator POC design](cpc/cpc-emulator-poc.md). The emulator itself has
-not been implemented yet.
-
-Source documents: [1951 overview](cpc/cpc-overview.pdf) and
-[1954 principles of operation](cpc/cpc-principles.pdf).
+See the [CPC folder guide](cpc/readme.md) for an overview of the historical
+references, emulator proposal, and related exploratory numerical examples.
 
 ## Repository conventions
 
