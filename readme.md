@@ -21,6 +21,11 @@ for the Python debugger configuration in `.vscode/launch.json`.
 
 ## Projects
 
+### Numerical examples
+
+The [numerical examples guide](docs/readme.md) covers repeated complex
+squaring and matrix inversion with iterative improvement.
+
 ### SOR
 
 [`sor/sor.py`](sor/sor.py) currently applies one in-place sweep to a small
