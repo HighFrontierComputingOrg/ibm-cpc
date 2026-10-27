@@ -9,7 +9,7 @@ initial_values2 = [
     [0.000, 0.000, 0.000],
 ]
 initial_values = initial_values2
-omega = 1.1
+omega = 1.3
 
 # Include the boundary ring around the two-by-three interior grid.
 grid = [

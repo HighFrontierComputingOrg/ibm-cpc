@@ -8,7 +8,7 @@ This is an entry point into the world of the A matrix. If asked what linear alge
 
 ## Grid and boundary values
 
-The six unknowns are initialized as:
+The six unknowns can be initialized to zero. With a relaxation factor omega of 1.1 or 1.2, solution takes 6 iterations. With omega 1.0 or 1.3 it takes more iterations. This clearly demonstrates that the best value of omega is at the bottom of a valley and moving to either side is a mistake. The optimal omega and minimum number iterations is at the bottom of the valley. The six unknowns can also be initialized as in the book. These values are near the final solution and only a handful of iterations are needed in most cases, unless a poor omega is chosen.
 
 ```text
 0.400  0.600  0.400
@@ -43,7 +43,7 @@ the converged interior values are approximately:
 
 The historical page 125 notes round intermediate arithmetic to three
 significant digits, so their last digits differ slightly from the script's
-full-precision results. The script uses a relaxation factor of 1.
+full-precision results.
 
 ## Notes and references
 
