@@ -1,98 +1,80 @@
 # IBM CPC
 
-This repository collects small numerical-method examples connected to the
-IBM CPC:
-<https://www.columbia.edu/cu/computinghistory/cpc.html>.
+This repository explores the numerical methods and computing history around
+the IBM Card-Programmed Electronic Calculator (CPC). Its examples are small
+enough to inspect and run, but illustrate important ideas in linear algebra:
+optimizing a constrained plan, solving a grid equation iteratively, and
+seeing how finite-precision arithmetic affects a calculation.
 
-## Python setup
-
-Python dependencies are declared in [`pyproject.toml`](pyproject.toml).
-Create the project environment and install the project and its dependencies
-once:
-
-```sh
-python3 -m venv .venv
-.venv/bin/python -m pip install -e ".[debug]"
-```
-
-Run the Python examples with `.venv/bin/python` so they use the project
-environment and its NumPy installation. The `debug` extra installs debugpy
-for the Python debugger configuration in `.vscode/launch.json`.
+The projects are related by their historical setting, not by a single
+software application. The Simplex and grid examples are independent
+demonstrations; the CPC emulator is a design proposal, not a working
+emulator. Historical papers, manuals, transcriptions, and scans are kept
+alongside the code so the examples can be compared with their sources. For
+background on the machine, see the [Columbia IBM CPC history
+page](https://www.columbia.edu/cu/computinghistory/cpc.html).
 
 ## Projects
 
-### Simplex
+### Simplex: planning under constraints
 
-The [Python example](simplex/simplex.py) solves Symonds's refinery running
-plan, choosing crude-oil operations to maximize profit within supply and
-product limits. Six Octave programs demonstrate the Simplex method step by
-step, from full-tableau updates to a revised implementation with basis
-updates, FTRAN, BTRAN, pricing, and the ratio test.
+The [refinery example](simplex/simplex.py) turns a running-plan problem into
+linear programming: choose how much of each crude-oil operation to run while
+respecting crude supplies and product limits, and maximize profit. Product
+limits are ceilings, so the best plan may leave some demand unmet if making
+more would not be profitable.
 
-Run the refinery example from the repository root:
+Run the Python model from the repository root:
 
 ```sh
 .venv/bin/python -m simplex.simplex
 ```
 
-Run an Octave example with:
+Six [Octave examples](simplex/1968-alp/) build the Simplex algorithm in
+stages—from updating a full tableau to revised-simplex techniques such as
+pricing, FTRAN, BTRAN, and the ratio test. Run the first stage with
+`octave simplex/1968-alp/smpl1.m`; replace `smpl1.m` with `smpl2.m` through
+`smpl6.m` to explore the rest. The [Simplex guide](simplex/readme.md) and
+[source notes](simplex/1968-alp/readme.md) provide more detail. The model
+comes from the refinery-planning work documented in
+[Symonds's Chapter 3 notes](simplex/1955-symonds-chp3.md).
 
-```sh
-octave simplex/1968-alp/smpl1.m
-```
+### SOR and ADI: solving a grid equation
 
-Replace `smpl1.m` with `smpl2.m` through `smpl6.m` to explore the later
-stages. The [Simplex guide](simplex/readme.md), [Symonds notes](simplex/1955-symonds-chp3.md),
-and [ALP source notes](simplex/1968-alp/readme.md) provide more detail and references.
+[SOR](sor/sor.py) and [ADI](adi/adi.py) use the same small discrete Laplace
+problem: find interior grid values consistent with fixed boundary values.
+This makes them a useful pair to compare. SOR updates one cell at a time,
+reusing values as it sweeps across the grid, with a relaxation factor
+controlling the update. ADI instead alternates row and column sweeps, solving
+each line implicitly. Both approximate the steady-state solution, but take
+different routes through the underlying linear system.
 
-### SOR
-
-See the [SOR guide](sor/readme.md) for an overview of the grid example,
-how to run it, and the related source notes.
-
-[`sor/sor.py`](sor/sor.py) currently applies one in-place sweep to a small
-two-by-three grid, using a relaxation factor of 1. It keeps the boundary
-values fixed, retains full floating-point precision internally, and formats
-the displayed grid to three decimal places.
-
-The accompanying [page 123 notes](sor/1967-cslas/page123.md),
-[page 124 notes](sor/1967-cslas/page124.md), and
-[page 125 notes](sor/1967-cslas/page125.md) summarize the grid model, initial
-values, boundary conditions, and first iteration. The page scans are kept
-beside the notes.
-
-Run it from the repository root:
+Run either example from the repository root:
 
 ```sh
 .venv/bin/python sor/sor.py
-```
-
-### ADI
-
-[`adi/adi.py`](adi/adi.py) implements the alternating-direction implicit
-method on a two-by-three grid for the discrete Laplace equation. Each
-iteration alternates implicit row and column solves while keeping the
-boundary values fixed. The example uses NumPy and follows the description in
-Peaceman's [1990 paper](adi/1990-peaceman.pdf), pages 114–116.
-
-Run it from the repository root:
-
-```sh
 .venv/bin/python -m adi.adi
 ```
 
-See the [ADI guide](adi/readme.md) for more context and details.
+The [SOR guide](sor/readme.md) explains the grid, relaxation factor, and
+historical worked example. The [ADI guide](adi/readme.md) introduces the
+alternating-direction method and links it to Peaceman's
+[1990 retrospective](adi/1990-peaceman.pdf).
 
-### Numerical examples
+### Numerical examples: precision and stability
 
-The [numerical examples guide](docs/readme.md) covers repeated complex
-squaring and matrix inversion with iterative improvement.
+The [numerical examples guide](cpc/msc/readme.md) covers two further
+experiments. Repeated complex squaring shows how a tiny difference in the
+starting value becomes visible through repeated arithmetic. Matrix inversion
+and iterative improvement use a Hilbert matrix to make finite-precision
+error—and the effect of refining a computed solution—easier to observe.
+These are standalone numerical examples, not components of the emulator
+proposal.
 
-### CPC emulator POC
+### CPC emulator proof of concept
 
-See the [CPC folder guide](cpc/readme.md) for an overview of the historical
-references, emulator proposal, and related exploratory numerical examples.
-
-## Repository conventions
-
-Python cache directories (`__pycache__/`) are ignored by Git.
+The [CPC folder](cpc/) contains historical machine manuals and a
+[proof-of-concept design](cpc/cpc-emulator-poc.md) for a small behavioral
+model. The proposal focuses on the CPC's card-driven workflow, decimal
+arithmetic, control panel, and storage. It is not implemented, and does not
+aim to reproduce the complete machine or its timing.
