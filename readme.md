@@ -1,7 +1,7 @@
 # IBM CPC
 
 This repository collects small numerical-method examples connected to the
-IBM CPC computing history project:
+IBM CPC:
 <https://www.columbia.edu/cu/computinghistory/cpc.html>.
 
 ## Python setup
@@ -21,10 +21,29 @@ for the Python debugger configuration in `.vscode/launch.json`.
 
 ## Projects
 
-### Numerical examples
+### Simplex
 
-The [numerical examples guide](docs/readme.md) covers repeated complex
-squaring and matrix inversion with iterative improvement.
+The [Python example](simplex/simplex.py) solves Symonds's refinery running
+plan, choosing crude-oil operations to maximize profit within supply and
+product limits. Six Octave programs demonstrate the Simplex method step by
+step, from full-tableau updates to a revised implementation with basis
+updates, FTRAN, BTRAN, pricing, and the ratio test.
+
+Run the refinery example from the repository root:
+
+```sh
+.venv/bin/python -m simplex.simplex
+```
+
+Run an Octave example with:
+
+```sh
+octave simplex/1968-alp/smpl1.m
+```
+
+Replace `smpl1.m` with `smpl2.m` through `smpl6.m` to explore the later
+stages. The [Simplex guide](simplex/readme.md), [Symonds notes](simplex/1955-symonds-chp3.md),
+and [ALP source notes](simplex/1968-alp/readme.md) provide more detail and references.
 
 ### SOR
 
@@ -48,28 +67,26 @@ Run it from the repository root:
 .venv/bin/python sor/sor.py
 ```
 
-### Simplex
-
-The six Octave programs in [`simplex/`](simplex/) build from a complete
-tableau update to a revised simplex implementation with basis updates, stored
-pivot transformations, FTRAN, BTRAN, pricing, and a ratio test.
-
-Run an example from the repository root:
-
-```sh
-octave simplex/smpl1.m
-```
-
-Replace `smpl1.m` with `smpl2.m` through `smpl6.m` to run the other stages.
-The [simplex guide](simplex/readme.md) describes the programs. Detailed
-[source notes and page index](simplex/alp/readme.md) cover the worked model,
-pivot rules, product-form inverse, and sparse reinversion; the photographed
-pages are stored in `simplex/alp/`.
-
 ### ADI
 
-The [ADI folder](adi/) is reserved for alternating-direction implicit
-examples; it currently contains only a short placeholder.
+[`adi/adi.py`](adi/adi.py) implements the alternating-direction implicit
+method on a two-by-three grid for the discrete Laplace equation. Each
+iteration alternates implicit row and column solves while keeping the
+boundary values fixed. The example uses NumPy and follows the description in
+Peaceman's [1990 paper](adi/1990-peaceman.pdf), pages 114–116.
+
+Run it from the repository root:
+
+```sh
+.venv/bin/python -m adi.adi
+```
+
+See the [ADI guide](adi/readme.md) for more context and details.
+
+### Numerical examples
+
+The [numerical examples guide](docs/readme.md) covers repeated complex
+squaring and matrix inversion with iterative improvement.
 
 ### CPC emulator POC
 
