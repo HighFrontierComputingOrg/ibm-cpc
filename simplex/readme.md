@@ -9,3 +9,23 @@ The period from the 1952 gasoline blending work of Charnes and Cooper to the 195
 The maximum-profit running plan problem, adapted by Symonds from earlier work by Charnes and Cooper, captures the delicate balancing act at the heart of refinery management. A plant manager has four crude oils A, B, C, and D on hand, each arriving in limited weekly quantities. Crude C offers an operational choice: it can be routed through a standard fuel setup or tuned to extract specialized lube distillate, giving five possible ways to run the plant. Every run cracks the oil into a different mix of four finished products, gasoline, heating oil, lube distillate, and fuel oil, each carrying its own margin per barrel. The operational challenge lies in the boundaries. On the supply side, crude availability is strictly capped by weekly deliveries. On the market side, customer demand sets an upper limit on how much of each fuel can be sold. Crucially, these product targets are ceilings rather than mandatory quotas. If processing another barrel yields low-margin products that fail to cover their costs, the refinery simply leaves that demand unmet rather than chasing volume for its own sake.
 
 To navigate these trade-offs, the Simplex method begins with the plant entirely idle, running no crude and leaving all market demand unfilled. At each step, it answers a fundamental question: which operation adds the most profit per barrel? The algorithm ramps up that run until it strikes an immediate physical bottleneck, either an empty crude tank or a saturated product market. Once a constraint binds, the method brings in the next most attractive run to rebalance throughput, continually substituting one operational path for another. When no further substitution can improve the margin, the refinery settles into an optimal rhythm. Every barrel of market demand for gasoline, heating oil, and lube distillate is satisfied, while leaving a slight shortfall of barrels in fuel oil where additional processing would erode net returns. The resulting balance generates roughly $67,830 in weekly profit, offering an early, definitive demonstration of how linear programming could turn raw operational constraints into disciplined economic strategy.
+
+## Using the example
+
+Run the Python program from the repository root:
+
+```sh
+.venv/bin/python -m simplex.simplex
+```
+
+It prints each entering and leaving operation, the resulting crude run
+volumes, product output and unmet targets, unused crude, and maximum weekly
+profit. To try a different refinery, edit the model data near the start of
+[simplex.py](simplex.py): operation names, product yields, crude supplies,
+product limits, and profit per barrel. Keep the entries in the same order as
+their names. Product limits are maximums, not required production amounts.
+
+For a step-by-step view of the algorithm, run the Octave programs
+[smpl1.m](1968-alp/smpl1.m) through [smpl6.m](1968-alp/smpl6.m). Each adds
+another part of the simplex procedure, from updating the full tableau to
+pricing and choosing the leaving variable.
