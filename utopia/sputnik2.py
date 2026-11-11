@@ -2,8 +2,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy.optimize import least_squares
 
-# Synthetic Doppler-fitting exercise, not a reconstruction of Sputnik 1 data
-# or of the historical APL/UNIVAC orbit-determination work.
+# Synthetic range-rate fitting exercise, not a reconstruction of Sputnik 1
+# data or of the historical APL/UNIVAC orbit-determination work.
 # --- 1. CONSTANTS & WORLD SETUP ---
 GM = 3.986004418e14        # Earth's gravitational parameter (m^3/s^2)
 R_EARTH = 6378137.0       # Radius of Earth (meters)
@@ -82,8 +82,8 @@ def propagate_orbit(state_0, times):
 
     return np.array(pos_rec), np.array(vel_rec)
 
-# --- 3. DOPPLER RESIDUALS FOR THE FIT ---
-def doppler_residuals(state_guess, times, observed_freqs, f0_guess):
+# --- 3. FREQUENCY RESIDUALS FOR THE RANGE-RATE FIT ---
+def range_rate_frequency_residuals(state_guess, times, observed_freqs, f0_guess):
     """Return predicted-minus-observed frequencies for a candidate state."""
     pos_sat, vel_sat = propagate_orbit(state_guess, times)
     residuals = []
@@ -100,7 +100,7 @@ def doppler_residuals(state_guess, times, observed_freqs, f0_guess):
         # Project relative velocity along the station-to-satellite line of sight.
         range_rate = np.dot(rho, v_rel) / rho_norm
 
-        # First-order classical Doppler model; f0 is supplied, not estimated.
+        # First-order frequency-shift model driven by range rate; f0 is fixed.
         f_pred = f0_guess * (1.0 - range_rate / C)
         residuals.append(f_pred - observed_freqs[i])
 
@@ -128,7 +128,11 @@ for i, t in enumerate(times):
 blind_state_guess = np.array([4000.0e3, 5000.0e3, 1500.0e3, -4800.0, 4200.0, 2500.0])
 
 # Fit six initial-state components while holding the carrier frequency fixed.
-result = least_squares(doppler_residuals, blind_state_guess, args=(times, observed_freqs, true_f0))
+result = least_squares(
+    range_rate_frequency_residuals,
+    blind_state_guess,
+    args=(times, observed_freqs, true_f0),
+)
 est_state = result.x
 
 # --- 5. REPORT TWO ORBITAL METRICS ---
@@ -156,10 +160,14 @@ print(f"Estimated Orbit Inclination: {est_i:.2f}° (True: {true_i:.2f}°)")
 # not indicate historical transcriptions or a UNIVAC computation.
 plt.figure(figsize=(9, 5))
 plt.plot(times, np.array(observed_freqs)/1e6, 'ro', label='Station Transcriptions')
-initial_residuals = doppler_residuals(blind_state_guess, times, observed_freqs, true_f0)
+initial_residuals = range_rate_frequency_residuals(
+    blind_state_guess, times, observed_freqs, true_f0
+)
 # Adding predicted-minus-observed residuals back to observations gives predictions.
 plt.plot(times, (observed_freqs + initial_residuals)/1e6, 'k--', label='Initial Wrong Guess Track')
-final_residuals = doppler_residuals(est_state, times, observed_freqs, true_f0)
+final_residuals = range_rate_frequency_residuals(
+    est_state, times, observed_freqs, true_f0
+)
 plt.plot(times, (observed_freqs + final_residuals)/1e6, 'b-', linewidth=2, label='UNIVAC Reconstructed Path')
 plt.ylabel("Frequency (MHz)")
 plt.xlabel("Time Passed (Seconds)")

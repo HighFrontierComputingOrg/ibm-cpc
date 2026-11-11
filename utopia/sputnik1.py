@@ -2,9 +2,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy.optimize import curve_fit
 
-# This straight-line model illustrates range-rate Doppler shift; it is not a
+# This straight-line model illustrates range-rate dependent frequency shift;
+# it is not a
 # full orbital model or a reconstruction of APL's historical computation.
-def sputnik_doppler_model(t, f_0, t_ca, r_ca, v):
+def sputnik_range_rate_model(t, f_0, t_ca, r_ca, v):
     """
     Model received frequency for a constant-speed, straight-line pass.
 
@@ -24,8 +25,8 @@ def sputnik_doppler_model(t, f_0, t_ca, r_ca, v):
     # This derivative is negative while approaching and positive while receding.
     range_rate = (v**2 * (t - t_ca)) / slant_range
 
-    # First-order classical Doppler approximation; positive range rate lowers
-    # the received frequency, while negative range rate raises it.
+    # First-order frequency-shift approximation: positive range rate lowers
+    # received frequency, while negative range rate raises it.
     f_observed = f_0 * (1.0 - range_rate / c)
     return f_observed
 
@@ -40,7 +41,7 @@ true_v = 7800.0         # Chosen constant relative speed (meters per second)
 # Sample the modeled pass at 60 evenly spaced times over ten minutes.
 time_data = np.linspace(0, 600, 60)
 # Add Gaussian noise with a 15 Hz standard deviation to the model frequencies.
-clean_frequencies = sputnik_doppler_model(time_data, true_f0, true_t_ca, true_r_ca, true_v)
+clean_frequencies = sputnik_range_rate_model(time_data, true_f0, true_t_ca, true_r_ca, true_v)
 noise = np.random.normal(0, 15, size=time_data.shape)
 observed_frequencies = clean_frequencies + noise
 
@@ -48,7 +49,7 @@ observed_frequencies = clean_frequencies + noise
 # This least-squares demonstration is not a reproduction of APL's method.
 initial_guess = [20.000e6, 250.0, 500.0e3, 7000.0]
 estimated_params, covariance = curve_fit(
-    sputnik_doppler_model,
+    sputnik_range_rate_model,
     time_data,
     observed_frequencies,
     p0=initial_guess
@@ -57,19 +58,19 @@ estimated_params, covariance = curve_fit(
 est_f0, est_t_ca, est_r_ca, est_v = estimated_params
 
 # Compare fitted parameters with the known values used to generate the data.
-print("=== FIT TO SYNTHETIC DOPPLER OBSERVATIONS ===")
+print("=== FIT TO SYNTHETIC RANGE-RATE OBSERVATIONS ===")
 print(f"Fitted Carrier Frequency: {est_f0/1e6:.5f} MHz (Input: {true_f0/1e6:.5f} MHz)")
 print(f"Fitted Closest-Approach Time: {est_t_ca:.2f} sec (Input: {true_t_ca:.2f} sec)")
 print(f"Fitted Minimum Range: {est_r_ca/1000:.2f} km (Input: {true_r_ca/1000:.2f} km)")
 print(f"Fitted Relative Speed: {est_v:.2f} m/s (Input: {true_v:.2f} m/s)")
 
 # Plot the noisy synthetic observations and their fitted model.
-fit_frequencies = sputnik_doppler_model(time_data, *estimated_params)
+fit_frequencies = sputnik_range_rate_model(time_data, *estimated_params)
 
 plt.figure(figsize=(10, 6))
 plt.scatter(time_data, observed_frequencies / 1e6, color='red', alpha=0.6, label='Synthetic observations')
-plt.plot(time_data, fit_frequencies / 1e6, color='navy', linewidth=2, label='Fitted Doppler model')
-plt.title('Fitting a Synthetic Doppler Pass', fontsize=14, fontweight='bold')
+plt.plot(time_data, fit_frequencies / 1e6, color='navy', linewidth=2, label='Fitted range-rate model')
+plt.title('Fitting a Synthetic Range-Rate Pass', fontsize=14, fontweight='bold')
 plt.xlabel('Time Elapsed (Seconds)', fontsize=12)
 plt.ylabel('Observed Frequency (MHz)', fontsize=12)
 plt.grid(True, linestyle='--', alpha=0.7)
