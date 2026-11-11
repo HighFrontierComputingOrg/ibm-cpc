@@ -61,6 +61,23 @@ historical worked example. The [ADI guide](adi/readme.md) introduces the
 alternating-direction method and links it to Peaceman's
 [1990 retrospective](adi/1990-peaceman.pdf).
 
+### UTOPIA: satellite range-rate tracking, navigation, and geodesy
+
+The [Utopia examples](utopia/) explore how a satellite's line-of-sight
+range-rate changes its received radio frequency, connecting the Sputnik
+era's satellite tracking work with the later Transit navigation system. The
+examples use synthetic data and simplified models; they are demonstrations
+of the measurement and fitting ideas, not reconstructions of Sputnik 1's
+recorded signal or actual orbit. See the [Utopia guide](utopia/readme.md) for
+the equations, historical background, and sources.
+
+Run either example from the repository root:
+
+```sh
+.venv/bin/python utopia/sputnik1.py
+.venv/bin/python utopia/sputnik2.py
+```
+
 ### Numerical examples: precision and stability
 
 The [numerical examples guide](cpc/msc/readme.md) covers two further
